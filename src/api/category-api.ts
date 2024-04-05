@@ -1,8 +1,9 @@
 import { axiosClient } from "@/constant/axiosClient";
+import { Category } from "@/interfaces/category";
 
-export const createCategory = async (formData: FormData) => {
+export const createCategory = async (category: Category) : Promise<Category> => {
     try {
-      const response = await axiosClient.post("/category", formData);
+      const response = await axiosClient.post("/category", category);
       return response.data;
     } catch (error) {
       console.error("Error creating category:", error);

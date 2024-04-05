@@ -1,16 +1,13 @@
-import { useCategory } from "@/hooks/use-category"
+import { CreateOrEditCategory } from "@/components/category/CreateOrEdit";
 
 export default function CategoryPage() {
-  const { createCategory } = useCategory();
-
   return (
-    <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
-      <div className="flex max-w-[980px] flex-col items-start gap-2">
-        <h1>
-          Contenido de la categoria
-        </h1>
-  
-        
+    <section className="w-2/3 m-auto">
+      <div className="flex justify-between my-4">
+          <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-3xl">
+              Lista de Programas
+          </h1>
+          <CreateOrEditCategory />
       </div>
     </section>
   )
