@@ -2,8 +2,6 @@ import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -18,20 +16,15 @@ export function CreateOrEditCategory() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Crear Programa</Button>
+        <Button>Crear categoría</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Creando Programa</DialogTitle>
-          {/* <DialogDescription>
-            Make changes to your profile here. Click save when youre done.
-          </DialogDescription> */}
+          <DialogTitle>Creando categoría</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4">
           <FormCreateOrEdit />
         </div>
-        {/* <DialogFooter>
-        </DialogFooter> */}
       </DialogContent>
     </Dialog>
   )

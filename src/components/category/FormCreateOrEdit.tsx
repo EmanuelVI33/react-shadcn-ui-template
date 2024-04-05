@@ -1,11 +1,10 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useCategory } from "@/hooks/use-category";
-import { Form } from "react-router-dom";
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { zodResolver } from '@hookform/resolvers/zod';
 
 const formSchema = z.object({
     name: z.string(),
@@ -46,7 +45,7 @@ function FormCreateOrEdit() {
                     <FormItem>
                       <FormLabel>Nombre</FormLabel>
                       <FormControl>
-                        <Input placeholder="nombre del proyecto" {...field} />
+                        <Input placeholder="nombre" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -59,7 +58,7 @@ function FormCreateOrEdit() {
                     <FormItem>
                       <FormLabel>Descripción</FormLabel>
                       <FormControl>
-                        <Input type="text" placeholder="descripcion" {...field} />
+                        <Input type="text" placeholder="descripción" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

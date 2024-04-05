@@ -1,4 +1,5 @@
 import { CreateOrEditCategory } from "@/components/category/CreateOrEdit";
+import TableCategory from "@/components/category/TableCategory";
 
 export default function CategoryPage() {
   return (
@@ -8,6 +9,10 @@ export default function CategoryPage() {
               Lista de Programas
           </h1>
           <CreateOrEditCategory />
+      </div>
+
+      <div>
+        <TableCategory />
       </div>
     </section>
   )
