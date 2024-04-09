@@ -1,8 +1,18 @@
+import { CreateOrEditProduct } from "@/components/product/CreateOrEditProduct";
+import TableProduct from "@/components/product/TableProduct";
+
 export default function ProductPage() {
   return (
-    <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
-      <div className="flex max-w-[980px] flex-col items-start gap-2">
-        Contenido de la productos
+    <section className="w-11/12 m-auto">
+      <div className="flex justify-between my-4">
+          <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-3xl">
+              Productos
+          </h1>
+          <CreateOrEditProduct />
+      </div>
+
+      <div>
+        <TableProduct />
       </div>
     </section>
   )

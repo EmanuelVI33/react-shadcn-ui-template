@@ -1,7 +1,16 @@
 import { useCategory } from "@/hooks/use-category"
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+  } from "@/components/ui/table"
 
 function TableCategory() {
-    const { categories, isLoading, isError } = useCategory();
+    const { categories = [], isLoading, isError } = useCategory();
 
     if (isLoading) {
         return <h1>Error al cargar</h1>;
@@ -11,12 +20,31 @@ function TableCategory() {
         return 'Error al obtener los datos'
     }
 
-    console.log(categories);
-
     return (
-        <div>
-            {/* <p>{categories}</p> */}
-        </div>
+        <Table>
+            <TableCaption>Lista de categorías</TableCaption>
+            <TableHeader>
+                <TableRow>
+                <TableHead className="w-[100px]">Código</TableHead>
+                <TableHead>Nombre</TableHead>
+                <TableHead>Descripción</TableHead>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                {categories && categories.map((category) => {
+                    const { id, name, description } = category;
+
+                    return (
+                        <TableRow key={id}>
+                            <TableCell className="font-medium">{id}</TableCell>
+                            <TableCell>{name}</TableCell>
+                            <TableCell>{description}</TableCell>
+                        </TableRow>
+                    );
+                }
+                )}
+            </TableBody>
+        </Table>
     )
 }
 

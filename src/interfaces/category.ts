@@ -1,4 +1,8 @@
-export interface Category {
+export interface CategoryCreate {
     name: string,
-    description: string
+    description?: string
+}
+
+export interface CategoryUpdate extends CategoryCreate {
+    id: number;
 }

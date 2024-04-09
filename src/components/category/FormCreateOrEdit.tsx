@@ -5,14 +5,21 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { zodResolver } from '@hookform/resolvers/zod';
+import { DialogClose } from "@radix-ui/react-dialog";
+
+
+interface FormCreateOrEditProps {
+  handleSaveSuccess: () => void;
+}
 
 const formSchema = z.object({
-    name: z.string(),
+    name: z.string().min(3),
     description: z.string(),
   });
 
-function FormCreateOrEdit() {
+function FormCreateOrEdit({ handleSaveSuccess } : FormCreateOrEditProps) {
     const { createCategory } = useCategory();
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -25,6 +32,7 @@ function FormCreateOrEdit() {
         try {
             console.log(values);
             const response = createCategory(values);
+            handleSaveSuccess();
             console.log(response);
         } catch (error) {
             console.log(error);
@@ -65,8 +73,12 @@ function FormCreateOrEdit() {
                   )}
                 />
                 
-                <div className="flex justify-end w-full mt-5">
-                  <Button type="submit" className="w-1/3">Crear</Button>
+                <div className="flex justify-between mt-5">
+                  <DialogClose className="" >
+                      <Button>Cancelar</Button>
+                  </DialogClose>
+
+                  <Button type="submit" className="">Crear</Button>
                 </div>
               </form>
         </Form>

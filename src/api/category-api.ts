@@ -1,7 +1,7 @@
 import { axiosClient } from "@/constant/axiosClient";
-import { Category } from "@/interfaces/category";
+import { CategoryCreate, CategoryUpdate } from "@/interfaces/category";
 
-export const createCategory = async (category: Category) : Promise<Category> => {
+export const createCategory = async (category: CategoryCreate) : Promise<CategoryUpdate> => {
     try {
       const response = await axiosClient.post("/category", category);
       return response.data;
@@ -11,7 +11,7 @@ export const createCategory = async (category: Category) : Promise<Category> => 
     }
   };
   
-  export const getCategories = async () => {
+  export const getCategories = async (): Promise<Array<CategoryUpdate>> => {
     try {
       const response = await axiosClient.get("/category");
       return response.data;

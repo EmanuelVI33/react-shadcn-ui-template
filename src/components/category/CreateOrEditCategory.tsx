@@ -7,24 +7,28 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import FormCreateOrEdit from "./FormCreateOrEdit";
+import { useState } from "react";
 
 
 export function CreateOrEditCategory() {
-  // const program = await getPrograms();
-  // console.log(program);
+  const [open, setOpen] = useState(false);
+
+
+  const handleSaveSuccess = () => {
+    // Lógica para manejar el éxito al guardar
+    setOpen(false); // Cierra el modal
+  };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>Crear categoría</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[625px]">
         <DialogHeader>
           <DialogTitle>Creando categoría</DialogTitle>
         </DialogHeader>
-        <div className="grid gap-4">
-          <FormCreateOrEdit />
-        </div>
+        <FormCreateOrEdit handleSaveSuccess={handleSaveSuccess} />
       </DialogContent>
     </Dialog>
   )
