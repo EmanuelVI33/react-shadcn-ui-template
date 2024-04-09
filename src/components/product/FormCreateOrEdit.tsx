@@ -1,11 +1,9 @@
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { zodResolver } from '@hookform/resolvers/zod';
-import { DialogClose } from "@radix-ui/react-dialog";
 import { useProduct } from "@/hooks/use-product";
 import { useCategory } from "@/hooks/use-category";
 import {
@@ -15,10 +13,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-interface FormCreateOrEditProps {
-  handleSaveSuccess: () => void;
-}
+import { useCreateProductMutation } from "@/query/product-query";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   name: z.string().min(3),
@@ -27,33 +24,41 @@ const formSchema = z.object({
   purchasePrice: z.string(),
   stock: z.string(),
   categoryId: z.string(),
-  // salePrice: z.string().refine(salePrice => !isNaN(parseFloat(salePrice)), {
-  //   message: "El precio de venta debe ser un número válido"
-  // }),
-  // purchasePrice: z.string().refine(purchasePrice => !isNaN(parseFloat(purchasePrice)), {
-  //   message: "El precio de compra debe ser un número válido"
-  // }),
-  // stock: z.string().refine(stock => !isNaN(parseFloat(stock)), {
-  //   message: "El stock debe ser un número válido"
-  // }),
-  // categoryId: z.string().refine(categoryId => !isNaN(parseFloat(categoryId)), {
-  //   message: "Categoría selecionada no es un string válido"
-  // }),
 });
 
-function FormCreateOrEdit({ handleSaveSuccess } : FormCreateOrEditProps) {
-    const { createProduct } = useProduct();
+function FormCreateOrEdit() {
+    const { productContext, handleSaveModal, handleCloseModal } = useProduct();
+    const { mutate: createProduct, error, isError, isSuccess } = useCreateProductMutation();
     const { categories } = useCategory();
+
+    useEffect(() => {
+      if (isSuccess) {
+        toast.success("Producto Creado exitosamente");
+        handleSaveModal();
+      }
+    }, [isSuccess, handleSaveModal]);
+  
+    useEffect(() => {
+      if (isError) {
+        // const message = error.response.data.message;
+        const messages = error.response.data.message || {};
+        console.log(messages);
+        
+        messages.forEach(errorMessage=> {
+          toast.error(errorMessage);
+        });
+      }
+    }, [isError, error]);
 
     const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
       defaultValues: {
-        name: "",
-        description: "",
-        salePrice: "",
-        purchasePrice: "",
-        stock: "",
-        categoryId: "",
+        name: productContext?.name ?? '',
+        description: productContext?.description ?? '',
+        salePrice: productContext?.salePrice.toString() ?? '',
+        purchasePrice: productContext?.purchasePrice?.toString() ?? '',
+        stock: productContext?.stock.toString() ?? '',
+        categoryId: productContext?.category?.id.toString() ?? '',
       },
     });
 
@@ -61,10 +66,9 @@ function FormCreateOrEdit({ handleSaveSuccess } : FormCreateOrEditProps) {
       try {
         console.log(values);
         const response = createProduct(values);
-        handleSaveSuccess();
         console.log(response);
       } catch (error) {
-        console.log(error);
+        console.log(error); 
       }
     }
 
@@ -129,6 +133,19 @@ function FormCreateOrEdit({ handleSaveSuccess } : FormCreateOrEditProps) {
             />
             <FormField
               control={form.control}
+              name="stock"
+              render={({ field }) => (
+                <FormItem className="mb-3">
+                  <FormLabel>Stock</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="cantidad disponible " {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="categoryId"
               render={({ field }) => (
                 <FormItem className="mb-3">
@@ -155,12 +172,8 @@ function FormCreateOrEdit({ handleSaveSuccess } : FormCreateOrEditProps) {
                 </FormItem>
               )}
             />
-                
             <div className="flex justify-between mt-5">
-              <DialogClose className="w-1/4">
-                  <Button className="">Cancelar</Button>
-              </DialogClose>
-
+              <Button type="button" className="" onClick={() => handleCloseModal()}>Cancelar</Button>
               <Button type="submit" className="w-1/4">Crear</Button>
             </div>
           </form>
@@ -168,4 +181,4 @@ function FormCreateOrEdit({ handleSaveSuccess } : FormCreateOrEditProps) {
       </>);
 }
 
-export default FormCreateOrEdit
+export default FormCreateOrEdit;

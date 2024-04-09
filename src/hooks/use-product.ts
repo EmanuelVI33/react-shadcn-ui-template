@@ -1,13 +1,27 @@
-import { useProductQuery, useCreateProductMutation } from "@/query/product-query"
+import { useProductContext } from "@/context/ProductContext";
+import { Product } from "@/interfaces/product";
+import { useProductQuery } from "@/query/product-query"
 
 export const useProduct = () => {
-    const { mutate: createProduct } = useCreateProductMutation();
     const { data: products = [], isLoading, isError } = useProductQuery();
+    const { 
+        updateState, 
+        handleSaveModal, 
+        product: productContext, 
+        handleCloseModal 
+    } = useProductContext();
+
+    const updateProduct = (product: Product) => {
+        updateState(product);
+    }
 
     return {
-        createProduct,
+        updateProduct,
+        handleSaveModal,
+        handleCloseModal,
         products, 
+        productContext,
         isLoading, 
-        isError
+        isError,
     }
 }

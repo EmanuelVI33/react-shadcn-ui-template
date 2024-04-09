@@ -7,27 +7,26 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import FormCreateOrEdit from "./FormCreateOrEdit";
-import { useState } from "react";
+import { useProductContext } from "@/context/ProductContext";
 
+// interface CreateOrEditProductProp{
+//   product?: Product
+// }
 
 export function CreateOrEditProduct() {
-  const [open, setOpen] = useState(false);
-
-  const handleSaveSuccess = () => {
-    // Lógica para manejar el éxito al guardar
-    setOpen(false); // Cierra el modal
-  };
+  const { product, open, handleToogleModal, handleSaveModal } = useProductContext();
+  // const [open, setOpen] = useState(false);
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleToogleModal}>
       <DialogTrigger asChild>
         <Button>Crear producto</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[625px]">
         <DialogHeader>
-          <DialogTitle>Creando producto</DialogTitle>
+          <DialogTitle>{product ? 'Editar producto' : 'Creando producto'}</DialogTitle>
         </DialogHeader>
-        <FormCreateOrEdit handleSaveSuccess={handleSaveSuccess} />
+        <FormCreateOrEdit/>
       </DialogContent>
     </Dialog>
   )
