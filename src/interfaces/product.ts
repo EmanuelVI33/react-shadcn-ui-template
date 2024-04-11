@@ -13,7 +13,7 @@ export interface ProductCreate extends ProductBase {
 }
 
 export interface ProductUpdate extends ProductCreate {
-    id: number;
+    id: string;
 }
 
 export interface Product extends ProductBase {

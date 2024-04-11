@@ -1,18 +1,30 @@
-import { createProduct, getProducts } from "@/api/product-api";
+import { createProduct, getProducts, updateProduct } from "@/api/product-api";
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 
+// Peticcion Get
 export const useProductQuery = () => {
   return useQuery({
     queryKey: ["product"],
     queryFn: getProducts,
   });
 };
-
+  
 export const useCreateProductMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: createProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["product"] });
+    },
+  });
+};
+
+export const useUpdateProductMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: updateProduct,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["product"] });
     },
