@@ -14,7 +14,7 @@ import { useProductContext } from "@/context/ProductContext";
 // }
 
 export function CreateOrEditProduct() {
-  const { product, open, handleToogleModal, handleSaveModal } = useProductContext();
+  const { product, open, handleToogleModal } = useProductContext();
   // const [open, setOpen] = useState(false);
 
   return (

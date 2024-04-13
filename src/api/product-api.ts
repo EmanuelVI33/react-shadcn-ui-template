@@ -1,7 +1,7 @@
 import { axiosClient } from "@/constant/axiosClient";
-import { Product, ProductCreate, ProductUpdate } from "@/interfaces/product";
+import { Product, ProductMutate } from "@/interfaces/product";
 
-export const createProduct = async (product: ProductCreate) : Promise<Product> => {
+export const createProduct = async (product: ProductMutate) : Promise<Product> => {
   return await axiosClient.post("/product", product);
 };
   
@@ -15,6 +15,6 @@ export const getProducts = async (): Promise<Array<Product>> => {
   }
 };
 
-export const updateProduct = async (product: ProductUpdate) : Promise<Product> => {
+export const updateProduct = async (product: ProductMutate) : Promise<Product> => {
   return await axiosClient.patch(`/product/${product.id}`, product);
 };

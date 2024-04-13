@@ -33,6 +33,8 @@ export const ProductProvider = ({ children } : ProductProviderProp) => {
 
     const handleToogleModal = () => {
         setOpen(open => !open); 
+        if (product)
+            setProduct(null);
     };
 
     const handleSaveModal = () => {

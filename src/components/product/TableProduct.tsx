@@ -7,19 +7,16 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { useProduct } from "@/hooks/use-product";
+import { useProduct } from "@/hooks/product/use-product";
 import { Button } from "../ui/button";
+import { useProductQuery } from "@/hooks/product/use-product-query";
 
 function TableProduct() {
-    const { 
-        updateProduct,
-        products, 
-        isLoading, 
-        isError 
-    } = useProduct();
+    const { updateProductState } = useProduct();
+    const { data: products = [], isLoading, isError } = useProductQuery();
 
     if (isLoading) {
-        return <h1>Error al cargar</h1>;
+        return <h1>Cargando</h1>;
     }
 
     if (isError) {
@@ -43,28 +40,19 @@ function TableProduct() {
             </TableHeader>
             <TableBody>
                 {products && products.map(product => {
-                    const { 
-                        id,
-                        name, 
-                        description,
-                        salePrice,
-                        purchasePrice,
-                        stock,
-                        category,  
-                    } = product;
-                    const { name: nameCategory } = category;
+                    const { name: nameCategory } = product.category;
 
                     return (
-                        <TableRow key={id}>
-                            <TableCell className="font-medium">{id}</TableCell>
-                            <TableCell>{name}</TableCell>
-                            <TableCell>{description}</TableCell>
-                            <TableCell>{salePrice}</TableCell>
-                            <TableCell>{purchasePrice}</TableCell>
-                            <TableCell>{stock}</TableCell>
+                        <TableRow key={product.id}>
+                            <TableCell className="font-medium">{product.id}</TableCell>
+                            <TableCell>{product.name}</TableCell>
+                            <TableCell>{product.description}</TableCell>
+                            <TableCell>{product.salePrice}</TableCell>
+                            <TableCell>{product.purchasePrice}</TableCell>
+                            <TableCell>{product.stock}</TableCell>
                             <TableCell>{nameCategory}</TableCell>
                             <TableCell className="text-center flex justify-around">
-                                <Button onClick={() => updateProduct(product)}>
+                                <Button onClick={() => updateProductState(product)}>
                                     <span className="mr-2">Editar</span> 
                                     <svg xmlns="http://www.w3.org/2000/svg" width="1.2rem" height="1.2rem" viewBox="0 0 24 24"><path fill="currentColor" d="m14.06 9l.94.94L5.92 19H5v-.92zm3.6-6c-.25 0-.51.1-.7.29l-1.83 1.83l3.75 3.75l1.83-1.83c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29m-3.6 3.19L3 17.25V21h3.75L17.81 9.94z"/></svg>
                                 </Button>

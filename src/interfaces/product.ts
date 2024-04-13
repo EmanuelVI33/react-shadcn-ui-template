@@ -1,6 +1,7 @@
 import { CategoryUpdate } from "./category";
 
 interface ProductBase {
+    id?: string | null,
     name: string;
     description?: string;
     salePrice: number | string;
@@ -8,16 +9,11 @@ interface ProductBase {
     stock: number | string;
 }
 
-export interface ProductCreate extends ProductBase {
+export interface ProductMutate extends ProductBase {
     categoryId: number | string;
 }
 
-export interface ProductUpdate extends ProductCreate {
-    id: string;
-}
-
 export interface Product extends ProductBase {
-    id: number,
     category: CategoryUpdate;
 }
 

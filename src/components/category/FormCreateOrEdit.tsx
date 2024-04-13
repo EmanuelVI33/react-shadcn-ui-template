@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { useCategory } from "@/hooks/use-category";
+import { useCategory } from "@/hooks/category/use-category";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";

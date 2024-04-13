@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useProduct } from "@/hooks/use-product";
-import { useCategory } from "@/hooks/use-category";
+import { useProduct } from "@/hooks/product/use-product";
+import { useCategory } from "@/hooks/category/use-category";
 import {
   Select,
   SelectContent,
@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useCreateProductMutation } from "@/query/product-query";
+import { useProductMutation } from "@/hooks/product/use-product-mutation";
 import { useEffect } from "react";
 import { toast } from "sonner";
 
@@ -28,7 +28,7 @@ const formSchema = z.object({
 
 function FormCreateOrEdit() {
     const { productContext, handleSaveModal, handleCloseModal } = useProduct();
-    const { mutate: createProduct, error, isError, isSuccess } = useCreateProductMutation();
+    const { mutateProduct, isError, error, isSuccess } = useProductMutation();
     const { categories } = useCategory();
 
     useEffect(() => {
@@ -40,13 +40,14 @@ function FormCreateOrEdit() {
   
     useEffect(() => {
       if (isError) {
-        // const message = error.response.data.message;
-        const messages = error.response.data.message || {};
-        console.log(messages);
+        console.log(error);
+        const messages = error?.response?.data?.message;
         
-        messages.forEach(errorMessage=> {
-          toast.error(errorMessage);
-        });
+        Array.isArray(messages)
+        ? (messages.forEach((errorMessage: string)=> {
+            toast.error(errorMessage);
+          }))
+        : toast.error(error?.message ?? 'Error en el servidor');
       }
     }, [isError, error]);
 
@@ -62,11 +63,13 @@ function FormCreateOrEdit() {
       },
     });
 
-    async function onSubmit(values: z.infer<typeof formSchema>) {
+    function onSubmit(values: z.infer<typeof formSchema>) {
       try {
-        console.log(values);
-        const response = createProduct(values);
-        console.log(response);
+        if (productContext) {
+          mutateProduct({id: productContext?.id , ...values});
+        } else {
+          mutateProduct(values);
+        }
       } catch (error) {
         console.log(error); 
       }
@@ -75,10 +78,7 @@ function FormCreateOrEdit() {
     return (
       <>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className=""
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
               name="name"
@@ -150,35 +150,32 @@ function FormCreateOrEdit() {
               render={({ field }) => (
                 <FormItem className="mb-3">
                   <FormLabel>Categoría</FormLabel>
-                    <Select onValueChange={field.onChange} >
-                      <FormControl>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="selecciona una categoría" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {categories && categories.map(category => {
-                          const { id, name } = category;
-
-                          return (
-                            <SelectItem value={id+''} key={id}>
-                              {name}
-                            </SelectItem>
-                          );
-                        })}
-                      </SelectContent>
-                    </Select>
+                  <Select onValueChange={field.onChange} >
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="selecciona una categoría" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                    {categories && categories.map(category => (
+                        <SelectItem value={category.id.toString()} key={category.id}>
+                          {category.name}
+                        </SelectItem>
+                      ))
+                    }
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <div className="flex justify-between mt-5">
-              <Button type="button" className="" onClick={() => handleCloseModal()}>Cancelar</Button>
-              <Button type="submit" className="w-1/4">Crear</Button>
+            <div className="flex justify-between gap-5 mt-5">
+              <Button type="button" className="w-1/4" variant="destructive" onClick={() => handleCloseModal()}>Cancelar</Button>
+              <Button type="submit" className="w-1/2">Crear</Button>
             </div>
           </form>
         </Form>
       </>);
-}
+  }
 
-export default FormCreateOrEdit;
+  export default FormCreateOrEdit;

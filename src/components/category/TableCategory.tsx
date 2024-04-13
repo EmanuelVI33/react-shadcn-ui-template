@@ -1,4 +1,4 @@
-import { useCategory } from "@/hooks/use-category"
+import { useCategory } from "@/hooks/category/use-category"
 import {
     Table,
     TableBody,
