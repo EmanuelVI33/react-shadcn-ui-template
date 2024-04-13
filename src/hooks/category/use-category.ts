@@ -1,4 +1,4 @@
-import { useCategoryQuery, useCreateCategoryMutation } from "@/query/category-query";
+import { useCategoryQuery, useCreateCategoryMutation } from "@/hooks/category/category-query";
 
 export const useCategory = () => {
     const { mutate: createCategory } = useCreateCategoryMutation();

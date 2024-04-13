@@ -4,8 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useProduct } from "@/hooks/product/use-product";
-import { useCategory } from "@/hooks/category/use-category";
+import { useProduct } from "@/hooks/product/use-form-product";
 import {
   Select,
   SelectContent,
@@ -13,9 +12,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useProductMutation } from "@/hooks/product/use-product-mutation";
-import { useEffect } from "react";
-import { toast } from "sonner";
 
 const formSchema = z.object({
   name: z.string().min(3),
@@ -27,29 +23,7 @@ const formSchema = z.object({
 });
 
 function FormCreateOrEdit() {
-    const { productContext, handleSaveModal, handleCloseModal } = useProduct();
-    const { mutateProduct, isError, error, isSuccess } = useProductMutation();
-    const { categories } = useCategory();
-
-    useEffect(() => {
-      if (isSuccess) {
-        toast.success("Producto Creado exitosamente");
-        handleSaveModal();
-      }
-    }, [isSuccess, handleSaveModal]);
-  
-    useEffect(() => {
-      if (isError) {
-        console.log(error);
-        const messages = error?.response?.data?.message;
-        
-        Array.isArray(messages)
-        ? (messages.forEach((errorMessage: string)=> {
-            toast.error(errorMessage);
-          }))
-        : toast.error(error?.message ?? 'Error en el servidor');
-      }
-    }, [isError, error]);
+    const { productContext, handleCloseModal, mutateProduct, categories } = useProduct();
 
     const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
@@ -64,14 +38,10 @@ function FormCreateOrEdit() {
     });
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-      try {
-        if (productContext) {
-          mutateProduct({id: productContext?.id , ...values});
-        } else {
-          mutateProduct(values);
-        }
-      } catch (error) {
-        console.log(error); 
+      if (productContext) {
+        mutateProduct({id: productContext?.id , ...values});
+      } else {
+        mutateProduct(values);
       }
     }
 
@@ -150,7 +120,7 @@ function FormCreateOrEdit() {
               render={({ field }) => (
                 <FormItem className="mb-3">
                   <FormLabel>Categoría</FormLabel>
-                  <Select onValueChange={field.onChange} >
+                  <Select onValueChange={field.onChange} value={productContext?.category.id.toString()}>
                     <FormControl>
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="selecciona una categoría" />
@@ -171,7 +141,7 @@ function FormCreateOrEdit() {
             />
             <div className="flex justify-between gap-5 mt-5">
               <Button type="button" className="w-1/4" variant="destructive" onClick={() => handleCloseModal()}>Cancelar</Button>
-              <Button type="submit" className="w-1/2">Crear</Button>
+              <Button type="submit" className="w-1/2">Guardar</Button>
             </div>
           </form>
         </Form>

@@ -1,7 +1,7 @@
 import { CategoryUpdate } from "./category";
 
 interface ProductBase {
-    id?: string | null,
+    id?: string,
     name: string;
     description?: string;
     salePrice: number | string;

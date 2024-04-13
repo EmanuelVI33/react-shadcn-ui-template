@@ -7,7 +7,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { useProduct } from "@/hooks/product/use-product";
+import { useProduct } from "@/hooks/product/use-form-product";
 import { Button } from "../ui/button";
 import { useProductQuery } from "@/hooks/product/use-product-query";
 
