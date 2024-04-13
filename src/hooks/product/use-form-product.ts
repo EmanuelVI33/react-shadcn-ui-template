@@ -36,7 +36,7 @@ export const useProduct = () => {
         ? (messages.forEach((errorMessage: string)=> {
             toast.error(errorMessage);
           }))
-        : toast.error(error?.message ?? 'Error en el servidor');
+        : toast.error(error?.message ?? 'Error en el servidor'); // Mostrar error de la respuesta
       }
     }, [isError, error]);
 
