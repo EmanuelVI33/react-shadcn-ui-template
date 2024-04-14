@@ -7,27 +7,34 @@ import {
     AlertDialogFooter, 
     AlertDialogHeader, 
     AlertDialogTitle, 
-    AlertDialogTrigger 
 } from "@/components/ui/alert-dialog"
-import { Button } from "../ui/button"
+import { useAlertProductDelete } from "@/hooks/product/use-alert-product-delete"
 
 function DeleteProduct() {
+    const { openDelete, product, handleTogleModalDelete, deleteProduct, handleSaveModalDelete } = useAlertProductDelete();
+
+    const handleDelete = () => {
+        if (product && product.id) {
+            deleteProduct(product.id);
+            handleSaveModalDelete();
+        }
+    }
+
     return (
-        <AlertDialog open={true}>
-            <AlertDialogTrigger  asChild>
+        <AlertDialog open={openDelete} >
+            {/* <AlertDialogTrigger  asChild>
                 <Button variant="outline">Show Dialog</Button>
-            </AlertDialogTrigger>
+            </AlertDialogTrigger> */}
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogTitle>{`Esta seguro de eliminar el producto ${product?.name}?`}</AlertDialogTitle>
                     <AlertDialogDescription>
-                    This action cannot be undone. This will permanently delete your
-                    account and remove your data from our servers.
+                    {`El producto ${product?.name} con el código ${product?.id} se eliminará permanentemente`}
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction>Continue</AlertDialogAction>
+                    <AlertDialogCancel onClick={() => handleTogleModalDelete()}>Cancelar</AlertDialogCancel>
+                    <AlertDialogAction onClick={() => handleDelete()}>Eliminar</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

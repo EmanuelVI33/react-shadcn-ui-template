@@ -1,15 +1,14 @@
-import { Product } from "@/interfaces/product";
 import { useProductMutation } from "./use-product-mutation";
 import { useCategory } from '../category/use-category';
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { useProductContext } from "./use-product-context";
 
-export const useProduct = () => {
+export const useProductForm = () => {
     const { 
-        updateState, 
+        product, 
+        handleSetProduct, 
         handleSaveModal, 
-        product: productContext, 
         handleCloseModal, 
     } = useProductContext();
     const { 
@@ -40,16 +39,12 @@ export const useProduct = () => {
       }
     }, [isError, error]);
 
-    const updateProductState = (product: Product) => {
-        updateState(product);
-    }
-
     return {
-      productContext,
-      updateProductState,
+      product,
+      categories,  
+      handleSetProduct,
       handleSaveModal,
       handleCloseModal,
       mutateProduct,
-      categories,  
     }
 }

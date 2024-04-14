@@ -1,37 +1,35 @@
-import { createProduct, updateProduct } from "@/api/product-api";
 import { ProductMutate } from "@/interfaces/product";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useCreateProductMutation, useUpdateProductMutation } from "./use-product-react-query";
 
 export const useProductMutation = () => {
-    const queryClient = useQueryClient();
-
-    const createProductMutation = useMutation({
-        mutationFn: createProduct,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["product"] });
-        },
-    });
-
-    const updateProductMutation = useMutation({
-        mutationFn: updateProduct,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["product"] });
-        },
-    });
+    const { 
+        mutate: mutateCreate, 
+        isError: isErrorCreate, 
+        error: errorCreate, 
+        isSuccess: isSuccessCreate, 
+        isPending: isPendingCreate 
+    } = useCreateProductMutation();
+    
+    const { 
+        mutate: mutateUpdate, 
+        isError: isErrorUpdate, 
+        error: errorUpdate, 
+        isSuccess: isSuccessUpdate, 
+        isPending: isPendingUpdate 
+    } = useUpdateProductMutation();
 
     const mutateProduct = (values: ProductMutate) => {
         if (values.id) {
-            console.log(values);
-            updateProductMutation.mutate(values);
+            mutateCreate(values);
         } else {
-            createProductMutation.mutate(values);
+            mutateUpdate(values);
         }
     };
 
-    const isSuccess = createProductMutation.isSuccess || updateProductMutation.isSuccess;
-    const isPeding = createProductMutation.isPending || updateProductMutation.isPending;
-    const isError =createProductMutation.isError || updateProductMutation.isError;
-    const error = createProductMutation.error || updateProductMutation.error;
+    const isSuccess = isSuccessCreate || isSuccessUpdate;
+    const isPeding = isPendingCreate || isPendingUpdate;
+    const isError = isErrorCreate || isErrorUpdate;
+    const error = errorCreate || errorUpdate;
 
-    return { mutateProduct, createProductMutation, updateProductMutation, isError, error, isPeding, isSuccess };
+    return { mutateProduct, isError, error, isPeding, isSuccess };
 };

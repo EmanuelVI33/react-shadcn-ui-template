@@ -1,13 +1,13 @@
-import { useProductQuery } from "@/hooks/product/use-product-query";
-import { Product } from "@/interfaces/product";
 import { useProductContext } from "./use-product-context";
+import { useProductQuery } from "./use-product-react-query";
 
 export const useTableProduct = () => {
-    const { handleOpenModalCreate } = useProductContext();
+    const { handleSetProduct, handleOpenModalDelete } = useProductContext();
     const { data: products = [], isLoading, isError } = useProductQuery();
 
     return {
-        handleOpenModalCreate, 
+        handleSetProduct, 
+        handleOpenModalDelete,
         products,
         isLoading,
         isError,

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useProduct } from "@/hooks/product/use-form-product";
+import { useProductForm } from "@/hooks/product/use-product-form";
 import {
   Select,
   SelectContent,
@@ -23,23 +23,23 @@ const formSchema = z.object({
 });
 
 function FormCreateOrEdit() {
-    const { productContext, handleCloseModal, mutateProduct, categories } = useProduct();
+    const { product, handleCloseModal, mutateProduct, categories } = useProductForm();
 
     const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
       defaultValues: {
-        name: productContext?.name ?? '',
-        description: productContext?.description ?? '',
-        salePrice: productContext?.salePrice.toString() ?? '',
-        purchasePrice: productContext?.purchasePrice?.toString() ?? '',
-        stock: productContext?.stock.toString() ?? '',
-        categoryId: productContext?.category?.id.toString() ?? '',
+        name: product?.name ?? '',
+        description: product?.description ?? '',
+        salePrice: product?.salePrice.toString() ?? '',
+        purchasePrice: product?.purchasePrice?.toString() ?? '',
+        stock: product?.stock.toString() ?? '',
+        categoryId: product?.category?.id.toString() ?? '',
       },
     });
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-      if (productContext) {
-        mutateProduct({id: productContext?.id , ...values});
+      if (product) {
+        mutateProduct({id: product?.id , ...values});
       } else {
         mutateProduct(values);
       }
@@ -120,7 +120,7 @@ function FormCreateOrEdit() {
               render={({ field }) => (
                 <FormItem className="mb-3">
                   <FormLabel>Categoría</FormLabel>
-                  <Select onValueChange={field.onChange} value={productContext?.category.id.toString()}>
+                  <Select onValueChange={field.onChange} value={product?.category.id.toString()}>
                     <FormControl>
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="selecciona una categoría" />

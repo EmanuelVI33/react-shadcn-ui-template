@@ -11,7 +11,7 @@ import { useCreateOrEditProduct } from "@/hooks/product/use-create-or-edit-produ
 
 
 export function CreateOrEditProduct() {
-  const { handleOpenModal, product, open } = useCreateOrEditProduct();
+  const { open, product, handleOpenModal } = useCreateOrEditProduct();
 
   return (
     <Dialog open={open} onOpenChange={handleOpenModal}>

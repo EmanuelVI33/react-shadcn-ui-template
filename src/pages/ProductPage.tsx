@@ -1,4 +1,5 @@
 import { CreateOrEditProduct } from "@/components/product/CreateOrEditProduct";
+import DeleteProduct from "@/components/product/DeleteProduct";
 import TableProduct from "@/components/product/TableProduct";
 import { ProductProvider } from "@/context/ProductContext";
 
@@ -14,6 +15,7 @@ export default function ProductPage() {
         </div>
 
         <TableProduct />
+        <DeleteProduct />
       </section>
     </ProductProvider>
   )

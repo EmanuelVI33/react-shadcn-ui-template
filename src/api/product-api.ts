@@ -18,3 +18,7 @@ export const getProducts = async (): Promise<Array<Product>> => {
 export const updateProduct = async (product: ProductMutate) : Promise<Product> => {
   return await axiosClient.patch(`/product/${product.id}`, product);
 };
+
+export const deleteProduct = async (productId: string) => {
+  return await axiosClient.delete(`/product/${productId}`);
+};
