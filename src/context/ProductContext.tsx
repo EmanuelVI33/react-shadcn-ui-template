@@ -1,27 +1,16 @@
 import { Product } from "@/interfaces/product";
-import { createContext, ReactNode, useContext, useState } from "react";
-
+import { createContext, ReactNode,  useState } from "react";
                 
 interface AppContextType {
     product: Product | null;
     open: boolean;
-    updateState: (newState: Product) => void;
-    handleToogleModal: (value: boolean) => void;
+    handleOpenModal: (value: boolean) => void;
     handleSaveModal: () => void;
+    handleOpenModalCreate: (product: Product | null) => void
     handleCloseModal: () => void;
 }
   
-  // Creamos el contexto
-const ProductContext = createContext<AppContextType | undefined>(undefined);
-  
-  // Hook personalizado para utilizar el contexto
-export const useProductContext = () => {
-    const context = useContext(ProductContext);
-    if (!context) {
-        throw new Error('useAppContext debe ser utilizado dentro de un proveedor AppContext');
-    }
-    return context;
-};
+export const ProductContext = createContext<AppContextType | undefined>(undefined);
   
 type ProductProviderProp =  {
     children: ReactNode;
@@ -29,36 +18,34 @@ type ProductProviderProp =  {
 
 export const ProductProvider = ({ children } : ProductProviderProp) => {
     const [product, setProduct] = useState<Product | null>(null);
-    const [open, setOpen] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
 
-    const handleToogleModal = () => {
-        setOpen(open => !open); 
-        if (product)
-            setProduct(null);
+    const handleOpenModal = () => {
+        setOpenModal(value => !value); 
+        setProduct(null);
     };
 
     const handleSaveModal = () => {
-        setOpen(false);         // Cerrar modal
+        setOpenModal(false);         // Cerrar modal
         setProduct(null);       // Establecer en undefined
     }
 
     const handleCloseModal = () => {
         setProduct(null);
-        setOpen(false);
+        setOpenModal(false);
     }
 
-    // Función para actualizar el estado
-    const updateState = (newState: Product) => {
-        setProduct(newState);
-        handleToogleModal();
-    };
+    const handleOpenModalCreate = (product: Product | null) => {
+        setProduct(product);
+        setOpenModal(true);
+    }
 
     const contextValue: AppContextType = {
         product,
-        open,
-        updateState,
+        open: openModal,
         handleSaveModal,
-        handleToogleModal,
+        handleOpenModalCreate,
+        handleOpenModal,
         handleCloseModal,
     };
 

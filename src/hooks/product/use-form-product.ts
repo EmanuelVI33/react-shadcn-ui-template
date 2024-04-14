@@ -1,9 +1,9 @@
-import { useProductContext } from "@/context/ProductContext";
 import { Product } from "@/interfaces/product";
 import { useProductMutation } from "./use-product-mutation";
 import { useCategory } from '../category/use-category';
 import { useEffect } from "react";
 import { toast } from "sonner";
+import { useProductContext } from "./use-product-context";
 
 export const useProduct = () => {
     const { 

@@ -7,18 +7,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import FormCreateOrEdit from "./FormCreateOrEdit";
-import { useProductContext } from "@/context/ProductContext";
+import { useCreateOrEditProduct } from "@/hooks/product/use-create-or-edit-product";
 
-// interface CreateOrEditProductProp{
-//   product?: Product
-// }
 
 export function CreateOrEditProduct() {
-  const { product, open, handleToogleModal } = useProductContext();
-  // const [open, setOpen] = useState(false);
+  const { handleOpenModal, product, open } = useCreateOrEditProduct();
 
   return (
-    <Dialog open={open} onOpenChange={handleToogleModal}>
+    <Dialog open={open} onOpenChange={handleOpenModal}>
       <DialogTrigger asChild>
         <Button>Crear producto</Button>
       </DialogTrigger>
