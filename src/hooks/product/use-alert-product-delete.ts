@@ -4,7 +4,7 @@ import { useDeleteProductMutation } from "./use-product-react-query";
 import { toast } from "sonner";
 
 export const useAlertProductDelete = () => {
-    const { mutate: deleteProduct, isError, error, isPending, isSuccess } = useDeleteProductMutation();
+    const { mutate: deleteProduct, isError, error, isSuccess } = useDeleteProductMutation();
     const { handleSaveModalDelete, handleTogleModalDelete, openDelete, product } = useProductContext();
 
     useEffect(() => {

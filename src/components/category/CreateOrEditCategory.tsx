@@ -13,10 +13,8 @@ import { useState } from "react";
 export function CreateOrEditCategory() {
   const [open, setOpen] = useState(false);
 
-
   const handleSaveSuccess = () => {
-    // Lógica para manejar el éxito al guardar
-    setOpen(false); // Cierra el modal
+    setOpen(false); 
   };
 
   return (
