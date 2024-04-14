@@ -3,7 +3,7 @@ import TableCategory from "@/components/category/TableCategory";
 
 export default function CategoryPage() {
   return (
-    <section className="w-2/3 m-auto">
+    <section className="w-11/12 m-auto">
       <div className="flex justify-between my-4">
           <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-3xl">
               Categorías
@@ -11,9 +11,7 @@ export default function CategoryPage() {
           <CreateOrEditCategory />
       </div>
 
-      <div>
-        <TableCategory />
-      </div>
+      <TableCategory />
     </section>
   )
 }
