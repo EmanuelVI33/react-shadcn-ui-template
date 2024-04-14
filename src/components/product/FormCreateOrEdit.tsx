@@ -120,7 +120,7 @@ function FormCreateOrEdit() {
               render={({ field }) => (
                 <FormItem className="mb-3">
                   <FormLabel>Categoría</FormLabel>
-                  <Select onValueChange={field.onChange} value={product?.category.id.toString()}>
+                  <Select onValueChange={field.onChange} defaultValue={product?.category.id.toString()}>
                     <FormControl>
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="selecciona una categoría" />
