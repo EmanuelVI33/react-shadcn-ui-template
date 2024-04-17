@@ -22,9 +22,6 @@ function DeleteProduct() {
 
     return (
         <AlertDialog open={openDelete} >
-            {/* <AlertDialogTrigger  asChild>
-                <Button variant="outline">Show Dialog</Button>
-            </AlertDialogTrigger> */}
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>{`Esta seguro de eliminar el producto ${product?.name}?`}</AlertDialogTitle>

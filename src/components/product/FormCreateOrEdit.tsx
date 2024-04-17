@@ -23,7 +23,12 @@ const formSchema = z.object({
 });
 
 function FormCreateOrEdit() {
-    const { product, handleCloseModal, mutateProduct, categories } = useProductForm();
+    const { 
+      product, 
+      categories, 
+      mutateProduct,  
+      handleCloseModal, 
+    } = useProductForm();
 
     const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),

@@ -4,6 +4,8 @@ import Layout from "@/layout/Layout";
 import CategoryPage from "./pages/CategoryPage";
 import ProductPage from "./pages/ProductPage";
 import { ProductProvider } from "./context/ProductContext";
+import OrderPage from "./pages/OrderPage";
+import { OrderProvider } from "./context/OrderContext";
 
 export const router = createBrowserRouter([
     {
@@ -25,7 +27,15 @@ export const router = createBrowserRouter([
               <ProductPage />
             </ProductProvider>
           ),
-        }
+        },
+        {
+          path: "orders",
+          element: (
+            <OrderProvider>
+              <OrderPage />
+            </OrderProvider>
+          ),
+        },
       ]
     },
   ]);
