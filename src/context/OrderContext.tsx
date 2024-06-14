@@ -1,38 +1,19 @@
 import { Product } from "@/interfaces/product";
-import { createContext, ReactNode, useReducer, useState } from "react";
-import { OrderDetail } from '../interfaces/order';
-
-export enum OrderActionTypes {
-    TOGLE_MODAL = 'TOGLE_MODAL',
-}
-
-type State = {
-    open: boolean;
-};
-  
-type Action =
-    | { type: OrderActionTypes.TOGLE_MODAL;  }
-
-const initialState: State = {
-    open: false,
-};
-
-const reducer = (state: State, action: Action) => {
-    switch (action.type) {
-        case OrderActionTypes.TOGLE_MODAL:
-            return { ...state, open: !state.open };
-        default:
-            return state;
-    }
-};
+import { createContext, ReactNode, useState } from "react";
+import { Order, OrderDetail } from '../interfaces/order';
+import { v4 as uuidv4 } from 'uuid';
 
 interface OrderContextType {
-    open: boolean;
-    orderDetail: Array<OrderDetail>;
-    handleTogleModal: () => void;
+    // Order
+    order: OrderState;
+    handleAddOrder: () => void
+    
+    // Order datail
+    orderDetail: OrderDetail[];
     handleAddProduct: (product: Product, amount: number) => void;
     handleClear: () => void;
     handleSaveOrder: () => void;
+    handleDelete: (index: number) => void;
 }
 
 export const OrderContext = createContext<OrderContextType | undefined>(undefined);
@@ -41,14 +22,28 @@ type OrderProviderProp =  {
     children: ReactNode;
 }
 
-export const OrderProvider = ({ children }: OrderProviderProp) => {
-    const [orderDetail, setOrderDetail] = useState<Array<OrderDetail>>([]);
-    const [state, dispatch] = useReducer(reducer, initialState);
-    const { open } = state;
+interface OrderState {
+    [key: string]: Order;
+  }
 
-    const handleTogleModal = () => {
-        dispatch({type: OrderActionTypes.TOGLE_MODAL});
-    }
+export const OrderProvider = ({ children }: OrderProviderProp) => {
+    const [order, setOrder] = useState<OrderState>({});
+    const [orderDetail, setOrderDetail] = useState<OrderDetail[]>([]);
+
+    const handleAddOrder = () => {
+        const total = orderDetail.reduce((total, detail) => total + detail.subTotal, 0);
+        const newOrder: Order = {
+            id: uuidv4(),
+            total,
+            orderDetail: [...orderDetail],
+        };
+
+        setOrder((prevOrders) => ({
+            ...prevOrders,
+            [newOrder.id]: newOrder,
+        }));
+        setOrderDetail([]); // Clear order details after adding order
+    };
 
     const handleAddProduct = (product: Product, amount: number) => {
         console.log(product, amount);
@@ -62,7 +57,15 @@ export const OrderProvider = ({ children }: OrderProviderProp) => {
             subTotal,
         };
 
-        setOrderDetail(orderDetail => [ ...orderDetail, detail ]);
+        setOrderDetail(orderDetail => {
+            const productExists = orderDetail.some(detail => detail.product.id === product.id);
+        
+            if (productExists) {
+              return orderDetail;
+            }
+        
+            return [...orderDetail, detail];
+        });
     }
 
     const handleClear = () => {
@@ -74,13 +77,22 @@ export const OrderProvider = ({ children }: OrderProviderProp) => {
         handleClear();
     }
 
+    const handleDelete = (index: number)  => {
+        setOrderDetail(prevOrderDetails => {
+            const newOrderDetails = [...prevOrderDetails];
+            newOrderDetails.splice(index, 1); // Elimina el elemento en el índice especificado
+            return newOrderDetails;
+        });
+    }
+
     return <OrderContext.Provider value={{ 
-       open,
+       order,
+       handleAddOrder,
        orderDetail,
-       handleTogleModal,
        handleAddProduct,
        handleClear,
        handleSaveOrder,
+       handleDelete,
     }}>
         {children}
     </OrderContext.Provider>;

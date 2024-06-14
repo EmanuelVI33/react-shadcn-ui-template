@@ -1,8 +1,9 @@
 import { Product } from "./product";
 
 export interface Order {
-    nit: string | null;
-    orderDetail: Array<OrderDetail>;
+    id: string;
+    total: number;
+    orderDetail: OrderDetail[];
 }
 
 export interface OrderDetail {

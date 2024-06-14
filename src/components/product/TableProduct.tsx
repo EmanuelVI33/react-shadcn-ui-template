@@ -45,8 +45,6 @@ function TableProduct() {
             </TableHeader>
             <TableBody>
                 {products && products.map(product => {
-                    const { name: nameCategory } = product.category;
-
                     return (
                         <TableRow key={product.id}>
                             <TableCell className="font-medium">{product.id}</TableCell>
@@ -55,7 +53,7 @@ function TableProduct() {
                             <TableCell>{product.salePrice}</TableCell>
                             <TableCell>{product.purchasePrice}</TableCell>
                             <TableCell>{product.stock}</TableCell>
-                            <TableCell>{nameCategory}</TableCell>
+                            <TableCell>{product.category ? product.category.name : 'Sin categoría'}</TableCell>
                             <TableCell className="text-center flex justify-around">
                                 <Button onClick={() => handleSetProduct(product)}>
                                     <span className="mr-2">Editar</span> 

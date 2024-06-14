@@ -3,7 +3,7 @@ import { CategoryCreate, CategoryUpdate } from "@/interfaces/category";
 
 export const createCategory = async (category: CategoryCreate) : Promise<CategoryUpdate> => {
     try {
-      const response = await axiosClient.post("/category", category);
+      const response = await axiosClient.post("/categories", category);
       return response.data;
     } catch (error) {
       console.error("Error creating category:", error);
@@ -13,7 +13,7 @@ export const createCategory = async (category: CategoryCreate) : Promise<Categor
   
   export const getCategories = async (): Promise<Array<CategoryUpdate>> => {
     try {
-      const response = await axiosClient.get("/category");
+      const response = await axiosClient.get("/categories");
       return response.data;
     } catch (error) {
       console.error("Error getting programs:", error);

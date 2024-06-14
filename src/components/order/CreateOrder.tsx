@@ -1,36 +1,25 @@
-import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import FormCreate from "./FormCreate";
-import { useOrderCreate } from "@/hooks/order/use-order-create";
 import TableOrderDetail from "./TableDetail";
-
+import FormCreateOrder from "./FormCreate";
+import { CustomDialog } from "../ui/custom-dialog";
+import { DialogDescription, DialogFooter } from "../ui/dialog";
+import { Button } from "../ui/button";
+import { useOrderContext } from "@/hooks/order/use-order-context";
 
 export function CreateOrder() {
-  const { open, handleTogleModal, handleSave } = useOrderCreate();
+  const { orderDetail, handleAddOrder } = useOrderContext();
 
   return (
-    <Dialog open={open} onOpenChange={handleTogleModal}>
-      <DialogTrigger asChild>
-        <Button>Registrar pedidos</Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[625px]">
-        <DialogHeader>
-          <DialogTitle>Registrar pedido</DialogTitle>
-        </DialogHeader>
-        <FormCreate/>
-        <TableOrderDetail />
+    <CustomDialog title="Realizar Pedido" titleButton="Registrar">
+      <>
+        <DialogDescription className="mb-12">
+          <FormCreateOrder />
+          <TableOrderDetail />
+        </DialogDescription>
         <DialogFooter>
-          <Button onClick={()=> handleSave()}>Registrar</Button>
+          <Button onClick={handleAddOrder}  disabled={orderDetail.length < 1}>Registrar</Button>
         </DialogFooter>
-      </DialogContent>
-    </Dialog>
+      </>
+    </CustomDialog>
   )
 }
 

@@ -20,6 +20,7 @@ const formSchema = z.object({
 
 function FormCreateOrder() {
   const { products, handleAddProduct } = useOrderFormCreate();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -84,55 +85,11 @@ function FormCreateOrder() {
             <Button type="submit" className="w-1/4">Agregar</Button>
           </div>
         </form>
-      </Form>
-    </>);
-  }
+    </Form>
+  </>);
+}
 
-  export default FormCreateOrder;
-
-
-// import {
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select";
-// import { useOrderFormCreate } from "@/hooks/order/use-order-form-create";
-// import { Input } from "../ui/input";
-// import React, { useRef, useState } from "react";
-// import { Button } from "../ui/button";
-// import TableOrderDetail from "./TableDetail";
-// import { Product } from "@/interfaces/product";
-
-// function FormCreate() {
-//   const { products, handleAddProduct } = useOrderFormCreate();
-//   const [product, setProduct] = useState<Product | null>();
-//   const amountRef = useRef();
+export default FormCreateOrder;
 
 
-//   return (
-//     <>
-//       <div className="my-2 flex justify-around gap-5">
-//         <Select>
-//           <SelectTrigger  className="w-full">
-//             <SelectValue  placeholder="selecciona un producto" />
-//           </SelectTrigger>
-//           <SelectContent>
-//           {products && products.map((product, index) => (
-//               <SelectItem  value={product.id} key={product.id}>
-//                 {`${product.name} - ${product.salePrice}`}
-//               </SelectItem>
-//             ))
-//           }
-//           </SelectContent>
-//         </Select>  
-//         <input ref={amountRef} defaultValue="0" className="w-1/4" />      
-//         <Button onClick={() => handleAddProduct(productRef?.current?.value, amountRef?.current?.value)}>Add</Button>
-//       </div>
-//       <TableOrderDetail />
-//     </>
-//   );
-// }
 
-// export default FormCreate;

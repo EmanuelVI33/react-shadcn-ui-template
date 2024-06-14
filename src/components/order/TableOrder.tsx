@@ -10,28 +10,24 @@ import { Button } from "../ui/button";
 import { useOrderContext } from '../../hooks/order/use-order-context';
 
 function TableOrder() {
-    const { orderDetail } = useOrderContext();
+    const { order } = useOrderContext();
 
     return (
         <Table>
             <TableHeader>
                 <TableRow>
                     <TableHead>Nro</TableHead>
-                    <TableHead>Nit</TableHead>
-                    <TableHead>Fecha</TableHead>
                     <TableHead>Total</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {orderDetail && orderDetail.map((item, index) => {
-                    const { product, unitPrice, amount, subTotal } = item;
+                {order && Object.values(order).map((item, index) => {
+                    const { id, total } = item;
 
                     return (
-                        <TableRow key={index}>
-                            <TableCell className="font-medium">{product.name}</TableCell>
-                            <TableCell>{unitPrice}</TableCell>
-                            <TableCell>{amount}</TableCell>
-                            <TableCell>{subTotal}</TableCell>
+                        <TableRow key={id}>
+                            <TableCell className="font-medium">{index + 1}</TableCell>
+                            <TableCell>{total}</TableCell>
                             <TableCell className="text-center flex justify-around">
                                 <Button>
                                     <span className="mr-2">Eliminar</span>
@@ -40,8 +36,7 @@ function TableOrder() {
                             </TableCell>
                         </TableRow>
                     );
-                }
-                )}
+                })}
             </TableBody>
         </Table>
     )
